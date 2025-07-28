@@ -41,8 +41,23 @@ class SearchEngine:
         self.use_stemming = use_stemming
         self.stemmer = PorterStemmer() if use_stemming else None
     
+    def add_crawl_documents(self, crawl_documents):
+        """Add documents from CommonCrawlClient format"""
+        for doc_id, doc_data in crawl_documents.items():
+            content = doc_data.get('content', '')
+            if content:
+                self.add_document(doc_id, content)
+                # Store additional metadata
+                self.documents[doc_id] = {
+                    'content': content,
+                    'url': doc_data.get('url', ''),
+                    'domain': doc_data.get('domain', ''),
+                    'timestamp': doc_data.get('timestamp', '')
+                }
+    
     def add_document(self, doc_id, content):
-        self.documents[doc_id] = content
+        if not isinstance(self.documents.get(doc_id), dict):
+            self.documents[doc_id] = content
         self.index[doc_id] = self.vector_search.concordance(
             content.lower(), self.use_stemming, self.stemmer
         )
@@ -60,7 +75,12 @@ class SearchEngine:
         for doc_id in self.index:
             relation = self.vector_search.relation(query_concordance, self.index[doc_id])
             if relation != 0:
-                matches.append((relation, doc_id, self.documents[doc_id]))
+                doc_data = self.documents[doc_id]
+                if isinstance(doc_data, dict):
+                    content = doc_data['content']
+                else:
+                    content = doc_data
+                matches.append((relation, doc_id, content, doc_data))
         
         matches.sort(reverse=True)
         

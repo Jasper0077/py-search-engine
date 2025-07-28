@@ -1,11 +1,13 @@
 # Python Search Engine
 
-A lightweight, POC, vector-based search engine implementation with Porter stemming algorithm for improved text preprocessing and search accuracy.
+A lightweight, POC, vector-based search engine implementation with Porter stemming algorithm for improved text preprocessing and search accuracy. This simple project implements the idea from [https://ondoc.logand.com/d/2697/pdf](Basic Vector Space Search Engine Theory).
 
 ## Features
 
 - **Vector Search**: Implements cosine similarity-based document ranking
 - **Porter Stemming**: Reduces words to their root forms to improve matching (e.g., "running" → "run")
+- **Common Crawl Integration**: Fetches real web documents from Common Crawl archive
+- **HTML Text Extraction**: Strips HTML tags and extracts clean text content
 - **Modular Design**: Separate classes for different functionalities
 - **Flexible API**: Can be used with or without stemming
 
@@ -18,10 +20,14 @@ py-search-engine/
 │   ├── algorithms/
 │   │   ├── __init__.py
 │   │   └── porter_stemming.py    # Porter stemming algorithm
+│   ├── crawl/
+│   │   ├── __init__.py
+│   │   └── common_crawl.py       # Common Crawl client and HTML processing
 │   └── search/
 │       ├── __init__.py
 │       └── vector_search.py      # Vector search and search engine
-├── example.py                    # Usage examples
+├── example.py                    # Basic usage examples
+├── example_crawl.py              # Common Crawl integration example
 ├── hello.py                      # Simple hello world
 └── README.md
 ```
@@ -39,6 +45,12 @@ cd py-search-engine
 
 ```bash
 python --version
+```
+
+3. Install required dependencies:
+
+```bash
+pip install requests
 ```
 
 ## Usage
@@ -72,13 +84,21 @@ for score, doc_id, content in results:
 engine = SearchEngine(use_stemming=False)
 ```
 
-### Run the Example
+### Run the Examples
+
+**Basic example with static data:**
 
 ```bash
 python example.py
 ```
 
-This will demonstrate the difference between search results with and without Porter stemming.
+**Common Crawl example with real web documents:**
+
+```bash
+python example_crawl.py
+```
+
+The basic example demonstrates the difference between search results with and without Porter stemming. The Common Crawl example fetches real web documents and shows how to search through them.
 
 ## How It Works
 
@@ -125,6 +145,7 @@ High-level interface for document management and search.
 
 - `add_document(doc_id, content)`: Add single document
 - `add_documents(documents_dict)`: Add multiple documents
+- `add_crawl_documents(crawl_documents)`: Add documents from CommonCrawlClient
 - `search(query, max_results)`: Search and return ranked results
 
 ### `PorterStemmer`
@@ -134,6 +155,18 @@ Implementation of the Porter stemming algorithm.
 **Methods:**
 
 - `stem(word)`: Reduce word to its root form
+
+### `CommonCrawlClient`
+
+Fetches and processes web documents from Common Crawl archive.
+
+**Methods:**
+
+- `search_urls(domain, limit)`: Search for URLs from a specific domain
+- `fetch_document(filename, offset, length)`: Fetch a specific document
+- `extract_text_from_html(html_content)`: Extract clean text from HTML
+- `get_documents(domains, max_docs_per_domain)`: Fetch documents from multiple domains
+- `get_sample_documents()`: Get sample documents for testing
 
 ## Performance Benefits
 

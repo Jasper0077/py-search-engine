@@ -1,4 +1,4 @@
-from src.search import SearchEngine, VectorSearch
+from src.search import SearchEngine
 
 if __name__ == "__main__":
     print("=== Search Engine with Porter Stemming ===\n")
@@ -33,12 +33,12 @@ if __name__ == "__main__":
         
         print("With Porter Stemming:")
         results_stemmed = engine_with_stemming.search(query)
-        for score, doc_id, content in results_stemmed:
+        for score, doc_id, content, _ in results_stemmed:
             print(f"  Score: {score:.4f} - Doc {doc_id}: {content}")
         
         print("\nWithout Stemming:")
         results_normal = engine_without_stemming.search(query)
-        for score, doc_id, content in results_normal:
+        for score, doc_id, content, _ in results_normal:
             print(f"  Score: {score:.4f} - Doc {doc_id}: {content}")
         
         print(f"\nStemming found {len(results_stemmed)} results vs {len(results_normal)} without stemming")
