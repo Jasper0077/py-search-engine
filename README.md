@@ -1,6 +1,6 @@
 # Python Search Engine
 
-A lightweight, POC, vector-based search engine implementation with Porter stemming algorithm for improved text preprocessing and search accuracy. This simple project implements the idea from [https://ondoc.logand.com/d/2697/pdf](Basic Vector Space Search Engine Theory).
+A lightweight, POC, vector-based search engine implementation with Porter stemming algorithm for improved text preprocessing and search accuracy. This simple project implements the idea from [Basic Vector Space Search Engine Theory](https://ondoc.logand.com/d/2697/pdf).
 
 ## Features
 
@@ -191,15 +191,3 @@ Without Stemming:
 
 Stemming found 2 results vs 0 without stemming
 ```
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
-
-## License
-
-This project is open source. Feel free to use and modify as needed.
